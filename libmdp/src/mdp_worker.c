@@ -231,7 +231,7 @@ mdp_worker_getsockopt (mdp_worker_t *self, 	int option, void *optval, size_t *op
 //  Wait for a new request.
 
 zmsg_t *
-mdp_worker_recv (mdp_worker_t *self, zframe_t **reply_to_p)
+mdp_worker_recv (mdp_worker_t *self, zframe_t **reply_to_p, bool yield)
 {
     while (true) {
         zmq_pollitem_t items [] = {
@@ -301,6 +301,9 @@ mdp_worker_recv (mdp_worker_t *self, zframe_t **reply_to_p)
             s_mdp_worker_send_to_broker (self, MDPW_HEARTBEAT, NULL, NULL);
             self->heartbeat_at = zclock_time () + self->heartbeat;
         }
+        // Exit if told so
+        if (yield)
+            break;
     }
     if (zctx_interrupted)
         printf ("W: interrupt received, killing worker...\n");

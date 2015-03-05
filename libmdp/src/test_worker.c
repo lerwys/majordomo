@@ -11,7 +11,7 @@ int main (int argc, char *argv [])
 
     while (1) {
         zframe_t *reply_to;
-        zmsg_t *request = mdp_worker_recv (session, &reply_to);
+        zmsg_t *request = mdp_worker_recv (session, &reply_to, false);
         if (request == NULL)
             break;              //  Worker was interrupted
         //  Echo message

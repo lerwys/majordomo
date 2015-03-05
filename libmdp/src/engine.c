@@ -245,7 +245,7 @@ int main(int argc, char *argv [])
 
     while (1) {
         zframe_t *reply_to = NULL;
-        zmsg_t *request = mdp_worker_recv (engine->worker, &reply_to);
+        zmsg_t *request = mdp_worker_recv (engine->worker, &reply_to, false);
         if (request == NULL)
             break;          // Worker has been interrupted
         s_engine_handle_request (engine, request, reply_to);
